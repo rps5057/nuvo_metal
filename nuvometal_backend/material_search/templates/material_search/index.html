@@ -1,0 +1,7 @@
+<h2>{{'Following is the list of available properties<br>'}}</h2>
+<ul>
+     {% for element in property_list %}
+        <li><a href="{% url 'material_search:property_criteria' forloop.counter %}"><h3>{{ element }}</h3> </a></li>
+     {% endfor %}
+</ul>
+{{ 'Click on the desired property to begin your search.' }}
