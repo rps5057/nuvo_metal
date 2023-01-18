@@ -94,7 +94,7 @@ def result_template_writer(filepath, result_data, property_name):
         template_line = f"""
             {template_line_value}"""
 
-        with open(filepath, 'a') as r_t:
+        with open(filepath,'a') as r_t:
             r_t.write(template_line)
 
     with open(filepath,'a')as r_t:

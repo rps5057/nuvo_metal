@@ -21,5 +21,5 @@ from django.contrib import admin
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', nuvometal_homescreen),
-    path('material_search/', include('material_search.urls'))
+    path('material_search/', include('material_search.urls'), name='menu')
 ]
