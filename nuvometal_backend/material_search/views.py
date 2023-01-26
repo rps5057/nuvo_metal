@@ -51,55 +51,6 @@ mat_data_dict = data_loader(data_file)
 property_value_columns = mat_data_dict['0']
 mat_data = mat_data_dict['1']
 
-# Function to write an HTML file to be used to display final result
-def result_template_writer(filepath, result_data, property_name):
-    html_start = """
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>{{ 'Material Search' }}</title>
-    </head>
-    <body>
-    <fieldset>
-        <Legend><h3>{{ 'Your search criteria' }}</h3></Legend>
-        <ul>
-            <li>{{ 'Property: ' }}{{ property_name }}</li>
-            <li>{{ 'Minimum desired value:  ' }}{{ property_min_value }}</li>
-            <li>{{ 'Maximum desired value:  ' }}{{ property_max_value }}</li>
-        </ul>
-    </fieldset>
-    <br>
-    <fieldset>
-        <legend><h3>{{ 'Following materials suit your criteria '}}<br></h3></legend>
-        <br>
-        <table border="1" class="dataframe">
-        <thead> <tr style="text-align: centre;"> <th></th> <th>Material</th> <th>{{ property_name }}</th> </tr> </thead>
-        <tbody>
-    """
-    html_end = """
-        </tbody>
-        </table>
-    </fieldset>
-    <br>
-    <a href="{% url 'material_search:property_index' %}"><h3>{{ 'Do you want another search?' }}</h3></a>
-    </body>
-    </html>   
-    """
-    with open(filepath, 'w')as r_t:
-        r_t.write(html_start)
-
-    for idx in range(len(result_data)):
-        template_line_value = '<tr><th>'+str(idx+1)+'</th><td>'+str(result_data['Material'][idx])+'</td><td>'+str(result_data[property_name][idx])+'</td></tr>'
-        template_line = f"""
-            {template_line_value}"""
-
-        with open(filepath,'a') as r_t:
-            r_t.write(template_line)
-
-    with open(filepath,'a')as r_t:
-        r_t.write(html_end)
-
 # View to be display property menu with hyperlinks
 def property_index(request):
     context = {'property_list':property_value_columns}
@@ -136,16 +87,37 @@ def mat_search(request, property_id, property_min_value, property_max_value):
     mat_search_result = mat_data[mat_search_criteria_1 & mat_search_criteria_2].sort_values(by=property_searched)
     response_data_df = mat_search_result.loc[:, ['Material', property_searched]]
 
-    response_data = response_data_df.reset_index()
+    response_data_df.reset_index(inplace=True)
+    response_data = response_data_df.to_html()
 
-    result_template_file = 'material_search/templates/material_search/mat_result.html'
-    result_template_writer(result_template_file, response_data, property_searched)
+    index_url = reverse('material_search:property_index')
+    html_start_direct = f"""
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <title>Material Search</title>
+        </head>
+        <body>
+        <fieldset>
+            <Legend><h3>Your search criteria</h3></Legend>
+            <ul>
+                <li>Property:{property_searched}</li>
+                <li>Minimum desired value:{property_min_value}</li>
+                <li>Maximum desired value:{property_max_value}</li>
+            </ul>
+        </fieldset>
+        <br>
+        <fieldset>
+            <legend><h3>Following materials suit your criteria<br></h3></legend>
+            <br>
+    """
+    html_end_direct = f"""
+       <br>
+       <a href="{index_url}"><h3>Do you want another search?</h3></a>
+       </body>
+       </html>   
+       """
 
-    context = {
-        'property_name':property_searched,
-        'property_min_value':property_min_value,
-        'property_max_value':property_max_value,
-        'response_data': response_data
-    }
-
-    return render(request, 'material_search/mat_result.html', context)
+    response_string = html_start_direct+response_data+html_end_direct
+    return HttpResponse(response_string)

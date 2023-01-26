@@ -1,14 +1,16 @@
 <form action="{% url 'material_search:property_criteria_pass' property_id %}" method="post">{% csrf_token %}
     <fieldset>
         <legend><h2>{{ 'Search Criteria' }}</h2></legend>
-        {{ 'The range available for ' }}{{ property_name }}{{ ' is ' }}{{ min_available }}{{ ' to ' }}{{ max_available }}{{ '.' }}
-        <h2>{{ 'Please enter the minimum value of ' }}{{ property_name }}{{ 'for your search' }}</h2>
-        <label for="min_value">{{ 'Minimum value' }}</label>
-        <input type="number" name="min_val" id="min_value" step="any" min="{{ min_available }}" max="{{ max_available }}">
-
-        <h2>{{ 'Please enter the maximum value of '}}{{ property_name }}{{ 'for your search' }}</h2>
-        <label for="max_value">{{ 'Maximum value' }}</label>
-        <input type="number" name="max_val" id="max_value" step="any" min="{{ min_available }}" max="{{ max_available }}">
+        <h2>{{ 'For ' }}{{ property_name }}{{ ':' }}</h2>
+        {{ 'The available range is ' }}{{ min_available }}{{ ' to ' }}{{ max_available }}{{ '.' }}
+        <h3>
+            <label for="min_value">{{ 'Please enter the Minimum value:' }}</label>
+            <input type="number" name="min_val" id="min_value" step="any" min="{{ min_available }}" max="{{ max_available }}">
+        </h3>
+        <h3>
+            <label for="max_value">{{ 'Please enter the Maximum value:' }}</label>
+            <input type="number" name="max_val" id="max_value" step="any" min="{{ min_available }}" max="{{ max_available }}">
+        </h3>
 
     </fieldset>
     <input type="submit" value="Search">
