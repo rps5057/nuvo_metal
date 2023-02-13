@@ -68,10 +68,12 @@ for idx in range(len(property_value_columns)):
     properties_summary.loc[idx,properties_summary_column_names]=current_property_summary
     
 # Functions for User input cross check agaianst available data
+# Validation function to check if a) min input < max input and b) input range is not completely out of available dataset range
+# Generates error message and does not allow further search
 def input_range_validation_1(property_id, input_min_value, input_max_value):
     min_available_value = properties_summary.loc[property_id-1,'min_value_in_db']
     max_available_value = properties_summary.loc[property_id-1,'max_value_in_db'] 
-    
+        
     if input_min_value > input_max_value:
         return_message = 'Please check the input values, make sure minimum input is not more than maximum input.'
         #break
@@ -86,6 +88,8 @@ def input_range_validation_1(property_id, input_min_value, input_max_value):
         
     return return_message        
 
+# Validation function to check the relation between input range and available dataset range
+# Generates display message to be displayed with search results
 def input_range_validation_2(property_id, input_min_value, input_max_value):
     min_available_value = properties_summary.loc[property_id-1,'min_value_in_db']
     max_available_value = properties_summary.loc[property_id-1,'max_value_in_db']
