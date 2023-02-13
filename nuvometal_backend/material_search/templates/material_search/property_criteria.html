@@ -2,16 +2,18 @@
     <fieldset>
         <legend><h2>{{ 'Search Criteria' }}</h2></legend>
         <h2>{{ 'For ' }}{{ property_name }}{{ ':' }}</h2>
-        {{ 'The available range is ' }}{{ min_available }}{{ ' to ' }}{{ max_available }}{{ '.' }}
+        {{ 'The available range is ' }}{{ min_available }}{{ ' ' }}{{property_unit}}{{ ' to ' }}{{ max_available }}{{ ' ' }}{{property_unit}}{{ '.' }}
         <h3>
             <label for="min_value">{{ 'Please enter the Minimum value:' }}</label>
-            <input type="number" name="min_val" id="min_value" step="any" min="{{ min_available }}" max="{{ max_available }}">
+            <input type="number" name="min_val" id="min_value" step="any">
+			{{property_unit}}
         </h3>
         <h3>
             <label for="max_value">{{ 'Please enter the Maximum value:' }}</label>
-            <input type="number" name="max_val" id="max_value" step="any" min="{{ min_available }}" max="{{ max_available }}">
+            <input type="number" name="max_val" id="max_value" step="any">
+			{{property_unit}}
         </h3>
-
+		{% if template_error_message %}<p><strong>{{ template_error_message }}</strong></p>{% endif %}
     </fieldset>
     <input type="submit" value="Search">
 </form>
