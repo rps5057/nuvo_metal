@@ -1,0 +1,19 @@
+<!--template for menu of properties-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Nuvometal Menu</title>
+</head>
+<style>
+    tab1{ padding-left: 2em; }
+</style>
+
+<body>
+<h2>Please choose your property of interest from the list below:<br></h2>
+<fieldset>
+		{% for element in property_list %}
+			<p><a href="{% url 'material_search:search_criteria' forloop.counter %}"><h3>{{ element }}</h3></a></p>
+		{% endfor %}
+</fieldset>
+</body>
