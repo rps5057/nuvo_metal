@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Nuvometal Search Criteria</title>
+</head>
+<style>
+    tab1{ padding-left: 2em; }
+
+    fieldset{ background-color: lightblue; }
+
+    input {
+        background-color: lightgreen;
+        }
+
+    input[type=submit] {
+        height: 40px;
+        width:  80px;
+        background-color: green;
+        font-size: 22px;
+        color: white;
+        font-family: "Times New Roman", Times, Serif;
+        }
+</style>
+<body>
+    <form action="{% url 'material_search:user_input_to_db' property_requested.property_no %}" method="post">{% csrf_token %}
+        <h3>{{ 'Search Criteria' }}</h3>
+        <fieldset>
+            <h3>{{ 'For ' }}{{ property_requested.property_name }}{{ ' :' }}</h3>
+            {{ 'The available range is ' }}{{ min_available }}{{ ' ' }}{{ property_requested.property_unit_si }}
+                {{ ' to ' }}{{ max_available }}{{ ' ' }}{{ property_requested.property_unit_si }}{{ '.' }}
+            <h3>
+                <label for="min_value">{{ 'Please enter the minimum desired value: ' }}</label>
+                <input type="number" name="min_val" id="min_value" step="any">{{ ' ' }}{{ property_requested.property_unit_si }}
+            </h3>
+            <h3>
+                <label for="max_value">{{ 'Please enter the maximum desired value: ' }}</label>
+                <input type="number" name="max_val" id="max_value" step="any">{{ ' ' }}{{ property_requested.property_unit_si }}
+            </h3>
+        </fieldset>
+
+        {% if criteria_error_msg %}
+            <p><strong>{{ criteria_error_msg }}</strong></p>
+        {% endif %}
+        <br>
+        <input type="submit" value="Search">
+</body>
+</html>

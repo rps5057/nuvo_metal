@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Nuvometal Result</title>
+</head>
+<body>
+    <h3>{{ 'Your search criteria: ' }}</h3>
+    <fieldset style="background-color: lightgreen;">
+        <ul>
+            <li>{{ 'Property:' }}{{ search_obj.property_name.property_name }}</li>
+            <li>{{ 'Minimum desired value:' }}{{ search_obj.minimum_value }}{{ search_obj.property_name.property_unit_si }}</li>
+            <li>{{ 'Maximum desired value:' }}{{ search_obj.maximum_value }}{{ search_obj.property_name.property_unit_si }}</li>
+            {% if display_msg %}
+                <p>{{ display_msg }}</p>
+            {% endif %}
+        </ul>
+    </fieldset>
+    <h3>{{ 'List of Materials and ' }}{{ search_obj.property_name.property_name }}{{ '(in' }}
+            {{ search_obj.property_name.property_unit_si }}{{ ') matching your criteria' }}<br></h3>
+    <fieldset style="background-color: seagreen;">
+        {% if count == 0 %}
+            <h2>{{ 'Sorry! No material found.' }}</h2>
+        {% else %}
+            <table border="1" class="dataframe" style="background-color: lightgreen">
+                <thead>
+                <tr style="text-align: center;">
+                    <th>{{ 'S. No.' }}</th><th>{{ 'Material' }}</th><th>{{ search_obj.property_name.property_name }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for element in result_array %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                    {% for item in element %}
+                        <td>{{ item }}</td>
+                    {% endfor %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <p>{{ 'Total ' }}{{ count }}{{ ' materials found.' }}</p>
+        {% endif %}
+    </fieldset>
+    <br>
+<button type="button" style="background-color: lightblue;">
+    <a href="{% url 'material_search:menu' %}"><h3>{{ 'Do you want another search?' }}</h3></a>
+</button>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!--template for menu of properties-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Nuvometal Menu</title>
+</head>
+<style>
+    tab1{ padding-left: 2em; }
+
+    .menu_box{
+    	border: 2px outset black;
+    	background-color: lightblue;
+    	}
+
+    .summary_box{
+        border: 2px outset black;
+        background-color: lightgreen;
+        }
+</style>
+
+<body>
+<h2>Please choose your property of interest from the list below:<br></h2>
+<div class="menu_box">
+	<ol>
+		{% for element in property_list %}
+		<h3><a href="{% url 'material_search:search_criteria' forloop.counter %}"><li>{{ element }}</li></a></h3>
+		{% endfor %}
+	</ol>
+</div>
+<br>
+<p><h3>{{ 'Following is a summary of available data in database:' }}</h3></p>
+<div class="summary_box">
+    <br>
+    <table border="1" class="dataframe">
+    <thead>
+        <tr style="text-align: center;">
+            <th>{{ 'Property No.' }}</th> <th>{{ 'Property Name' }}</th> <th>{{ 'Property Unit' }}</th>
+            <th>{{ 'Min Available Value' }}</th> <th>{{ 'Max Available Value' }}</th> <th>{{ 'Total Data Points' }}</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for element in data_summary %}
+         <tr style="text-align: center;">
+        {% for item in element %}
+                <td>{{ item }}</td>
+        {% endfor %}
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+    <br>
+</div>
+</body>
