@@ -71,6 +71,21 @@ except Exception as err_msg:
     print(err_msg)
 
 
+# validation function to check if the user input is blank
+def check_input_for_blank(request):
+    """
+    PropertySearch: method, (property_no, property_name, minimum_value, maximum_value, search_date)
+    :param request
+    :return: str, error message in case of no input from user
+    """
+    if request.POST['min_val'] == "" or request.POST['max_val'] == "":
+        input_blank_msg = "Please enter both the minimum and maximum desired values for your chosen property."
+    else:
+        input_blank_msg = ""
+
+    return input_blank_msg
+    
+    
 # validation function to check if the user input values are in the range available in database
 def check_input_property_range(user_search_obj):
     """
@@ -164,7 +179,17 @@ def search_criteria(request, property_no):
 
 
 def user_input_to_db(request, property_no):
-    current_search = PropertySearch(
+    blank_error_msg = check_input_for_blank(request)
+    if blank_error_msg:
+        context = {
+            'property_requested': PropertiesList.objects.get(property_no=property_no),
+            'min_available': properties_summary.loc[property_no - 1, 'min_available_db'],
+            'max_available': properties_summary.loc[property_no - 1, 'max_available_db'],
+            'criteria_error_msg': blank_error_msg,
+        }
+        return render(request, 'material_search/search_criteria_form.html', context)
+    else:
+        current_search = PropertySearch(
                             property_no=property_no,
                             property_name=PropertiesList.objects.get(property_no=property_no),
                             minimum_value=float(request.POST['min_val']),

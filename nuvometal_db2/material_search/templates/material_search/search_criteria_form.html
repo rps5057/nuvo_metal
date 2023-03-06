@@ -31,11 +31,11 @@
                 {{ ' to ' }}{{ max_available }}{{ ' ' }}{{ property_requested.property_unit_si }}{{ '.' }}
             <h3>
                 <label for="min_value">{{ 'Please enter the minimum desired value: ' }}</label>
-                <input type="number" name="min_val" id="min_value" step="any">{{ ' ' }}{{ property_requested.property_unit_si }}
+                <input type="number" name="min_val" id="min_value" step="any" min="0">{{ ' ' }}{{ property_requested.property_unit_si }}
             </h3>
             <h3>
                 <label for="max_value">{{ 'Please enter the maximum desired value: ' }}</label>
-                <input type="number" name="max_val" id="max_value" step="any">{{ ' ' }}{{ property_requested.property_unit_si }}
+                <input type="number" name="max_val" id="max_value" step="any" min="0">{{ ' ' }}{{ property_requested.property_unit_si }}
             </h3>
         </fieldset>
 
